@@ -1,0 +1,39 @@
+<section class="p-4" style="border:solid 1px; background-color:rgb(246, 255, 253); width:90%; margin:auto;">
+
+<h2 style="color: blue; margin-bottom:10px;">Lista de productos</h2>
+
+{{#if statusList}}
+
+
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Img</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{#each datos }}
+            <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>{{this.title}}</td>
+            <td>{{this.price}}</td>
+            <td><img width="50" height="50" src="{{this.thumbnail}}"></td>
+            </tr>
+        {{/each}}
+
+    </tbody>
+    </table>
+
+
+{{else}}
+    
+    <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
+    
+{{/if}}
+
+
+</section>
