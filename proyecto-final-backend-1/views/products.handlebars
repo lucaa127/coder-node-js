@@ -1,0 +1,56 @@
+<section class="p-4" style="border:solid 1px; background-color:rgb(246, 255, 253); width:90%; margin:auto;">
+
+<h2 style="color: blue; margin-bottom:10px;">Lista de productos</h2>
+
+{{#if products}}
+
+
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Img</th>
+        <th scope="col">Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{#each products }}
+            <tr>
+            <th scope="row">{{this.idNumber}}</th>
+            <td>{{this.title}}</td>
+            <td>${{this.price}}</td>
+            <td><img width="50" height="50" src="{{this.thumbnail}}"></td>
+            <td class="p-4">
+                <i class="bi bi-trash-fill"
+                 onclick="return test('{{this._id}}')"
+                 style="color: tomato;
+                 font-size:1.1em;
+                 font-weight:bolder;"
+                ></i>
+            
+            </td>
+
+            </tr>
+        {{/each}}
+
+    </tbody>
+    </table>
+
+    <section class="w-100 d-flex justify-content-center" style="font-size: 1.4em;">
+        <i class="bi bi-arrow-left-short" style="margin: 0 15%"></i> 
+        <p class="w-50" style="font-size: 0.7em; text-align:center;"> 1-20 </p>
+        <i class="bi bi-arrow-right-short"  style="margin: 0 15%;"></i>
+
+    </section>
+
+{{else}}
+    
+    <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
+    
+{{/if}}
+
+
+</section>

@@ -1,0 +1,37 @@
+<br><form id="form">
+
+    <section class="p-3" style="border:solid 1px; background-color:rgb(239, 253, 253); width:98%; max-width:700px; margin:auto;">
+        <h2 style="color: blue; margin-bottom:10px;">Ingrese producto</h2>
+            <div class="mb-3">
+                <label for="title" class="form-label">Nombre</label>
+                <input type="text" name="title" class="form-control" id="title" required placeholder="Nombre del producto">
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Precio</label>
+                <input type="number" class="form-control" name="price"  id="price"  required placeholder="Precio del producto">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <input type="text" class="form-control" name="description"  id="description" required  placeholder="Descripción del producto">
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Categoría</label>
+                <select name="category"  id="category" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <option selected>Seleccione categoría</option>
+                <option value="bebidas">Bebidas</option>
+                <option value="panaderia">Panadería</option>
+                <option value="frutas">Frutas</option>
+                </select>
+
+            </div>
+                <button type="submit" class="btn btn-secondary">Enviar</button><br>
+            <br>
+
+                  {{>table}}
+
+            <br>
+    </section>
+
+
+</form>
+
