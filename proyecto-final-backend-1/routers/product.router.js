@@ -5,14 +5,27 @@ const productRouter = Router();
 const prodController = new ProductController();
 
 productRouter.get('/', async(req, res) => {
-try {   const   products = await prodController.getProducts();
-        let   limit = parseInt(req.query.limit);
-        console.log('ingresa al router')
-        if (!limit || (isNaN(limit))) {
-            res.send(products); 
-         } else {
-            res.send(products.slice(0,limit));
+try {   let page = (req.query.page && (!isNaN(req.query.page))) ? req.query.page : 1;  
+        let limit = (req.query.limit && (!isNaN(parseInt(req.query.limit)))) ? parseInt(req.query.limit) : 10;
+        let sort = (req.query.sort && (!isNaN(parseInt(req.query.sort)))) ? parseInt(req.query.sort) : false;
+              
+        const getProducts    = await prodController.getPaginated(page, sort, limit);
+        const products       = (!limit || (isNaN(limit))) ? getProducts.docs : getProducts.docs.slice(0,limit);  
+        const data  = {
+            status:200
+            ,payload: products
+            ,totalPages: getProducts.totalPages
+            ,prevPage: getProducts.prevPage
+            ,nextPage: getProducts.nextPage
+            ,page: getProducts.page
+            ,hasPrevPage: getProducts.hasPrevPage
+            ,hasNextPage: getProducts.hasNextPage
+            ,prevLink: ((getProducts.hasPrevPage) ? `/products/?limit=${limit}&page=${getProducts.prevPage}&sort=${sort}` : false)
+            ,nextLink: ((getProducts.hasNextPage) ? `/products/?limit=${limit}&page=${getProducts.nextPage}&sort=${sort}` : false)
         }
+
+            res.send(data); 
+
 } catch (error) {
         console.log(error)
         res.send(error);
@@ -22,8 +35,8 @@ try {   const   products = await prodController.getProducts();
 
 productRouter.get ('/:pid', async(req,res)=> {
     const { pid } = req.params;
-    const prods = await prodController.getProductById(pid);
-    res.status(200).json(prods);
+    const product = await prodController.getProductById(pid);
+    res.status(200).json(product);
 });
 
 productRouter.post('/', async(req,res)=> {

@@ -1,12 +1,9 @@
 import fs from 'fs';
+import { cartModel } from '../models/carts.model.js';
+import { productModel } from '../models/products.model.js';
 
 export default class CartController {
-    constructor(){
-        this.fPath = './carrito.json'
-        if (!fs.existsSync(this.fPath)) {
-			fs.writeFileSync(this.fPath, JSON.stringify([]));
-		    };
-        }
+    constructor(){}
 
         async listCarts(){ 
             try { 
@@ -19,46 +16,30 @@ export default class CartController {
             };
 
             async getCartProducts(cid){ 
-                try {const getCarts  = await this.listCarts();
-                     const cartById  = getCarts.find((x)=> x.id == cid);     
-                        if(cartById){
-                            return cartById
-                            } else {
-                            return {error: `El carrito ID: ${cid}, no existe.`}
-                        }
-                    } catch(error){
-                        console.log();
-                        return({error:'Error al obtener productos del carrito', ERR: error});
-                    }
-                };    
+                try {
+                    return await cartModel.findById(cid).populate({ path: 'products', model: productModel }).lean();
+                } catch (error) {
+                    console.log(error);
+                    return error;
+                }
+            };    
 
         async createCart(){ 
-           try {let newId = 0;
-                const arrCarritos = await this.listCarts();
-                    if(arrCarritos.length == 0){
-                        newId = 1;
-                       }   else   {
-                        let cartIds = arrCarritos.map( x =>{ return parseInt(x.id) } );
-                        let maxId = Math.max(...cartIds);
-                        newId = maxId + 1;
-                    };
-                const datosCarrito = {products: []};
-                const nuevoObjeto = {...datosCarrito, id: newId};
-    
-                arrCarritos.push(nuevoObjeto);
-                await fs.promises.writeFile(this.fPath, JSON.stringify(arrCarritos));
-                return newId  }   catch(error)   {
+           try {
+                const data = {products: [], status:'open'};  
+                return await cartModel.create(data);
+            }  catch(error)   {
+                    console.log(error)
                     return(error);
                 }
             };
 
             async addProductToCart(id,pid) {
-                try{const getCarts = await this.listCarts();
+                try{const getCart = await cartModel.findById(cid).lean();
                     let cartById = getCarts.find((x)=> x.id == id);
 
                     if (cartById){
-                    getCarts.map(async cart => {
-                        if(cart.id == cartById.id){
+
                             let prodById = cart.products.find((x)=> x.pid == pid);
                             console.log(' Objeto: ',prodById)
                             if (prodById){
@@ -71,8 +52,8 @@ export default class CartController {
                             } else {let newProd = {pid: pid, quantity: 1}
                                     cart.products.push(newProd);
                             }
-                         }            
-                    })
+                               
+
                         await fs.promises.writeFile(this.fPath, JSON.stringify(getCarts));
                         console.log('Info carros :',getCarts);
                         return getCarts;

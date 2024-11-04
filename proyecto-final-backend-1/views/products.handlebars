@@ -1,10 +1,39 @@
 <section class="p-4" style="border:solid 1px; background-color:rgb(246, 255, 253); width:90%; margin:auto;">
 
-<h2 style="color: blue; margin-bottom:10px;">Lista de productos</h2>
+<h4 style="color: darkslategrey; margin-bottom:10px;">Lista de productos</h4>
 
 {{#if products}}
 
 
+<section class="row">
+
+    <span style="width: 15%;"> Filtrar: </span>
+
+<select class="form-select form-select-sm" style="width: 30%;" name="sort" id="sort">
+    <option value="" selected>Ordenar por precio</option>
+    <option value="1">Menor precio</option>
+    <option value="-1">Mayor precio</option>
+</select>
+
+<select class="form-select form-select-sm" style="width: 30%;" name="limit" id="limit">
+    <option value="">Limitar lista</option>
+    <option value="1">1 producto</option>
+    <option value="2">2 productos</option>
+    <option value="3">3 productos</option>
+    <option value="4">4 productos</option>
+    <option value="5">5 productos</option>
+    <option value="6">6 productos</option>
+    <option value="7">7 productos</option>
+    <option value="8">8 productos</option>
+    <option value="9">9 productos</option>
+</select>
+
+<button class="btn btn-secondary" onclick="search();" style="width: 100px;">Buscar <i class="bi bi-search"></i></button>
+
+
+</section>
+    
+    
     <table class="table">
     <thead>
         <tr>
@@ -12,25 +41,24 @@
         <th scope="col">Producto</th>
         <th scope="col">Precio</th>
         <th scope="col">Img</th>
-        <th scope="col">Eliminar</th>
+        <th scope="col">+</th>
         </tr>
     </thead>
     <tbody>
 
-        {{#each products }}
+        {{#each products.payload }}
             <tr>
             <th scope="row">{{this.idNumber}}</th>
-            <td>{{this.title}}</td>
+            <td><a style="color: black;" href="/products/{{this._id}}">{{this.title}}</a></td>
             <td>${{this.price}}</td>
             <td><img width="50" height="50" src="{{this.thumbnail}}"></td>
             <td class="p-4">
-                <i class="bi bi-trash-fill"
-                 onclick="return test('{{this._id}}')"
-                 style="color: tomato;
-                 font-size:1.1em;
-                 font-weight:bolder;"
-                ></i>
-            
+                <i  class="bi bi-cart-plus"
+                    onclick="return test('{{this._id}}')"
+                    style="color: tomato;
+                    font-size:1.1em;
+                    font-weight:bolder;"
+                ></i>     
             </td>
 
             </tr>
@@ -40,9 +68,11 @@
     </table>
 
     <section class="w-100 d-flex justify-content-center" style="font-size: 1.4em;">
-        <i class="bi bi-arrow-left-short" style="margin: 0 15%"></i> 
-        <p class="w-50" style="font-size: 0.7em; text-align:center;"> 1-20 </p>
-        <i class="bi bi-arrow-right-short"  style="margin: 0 15%;"></i>
+     <a href="{{#if products.hasPrevPage}}{{products.prevLink}}{{else}}#{{/if}}"> <i class="bi bi-arrow-left-short" style="margin: 0 15%"></i> </a>
+        
+        <p class="w-50" style="font-size: 0.7em; text-align:center; color:green;"> <span style="text-decoration: underline;">{{products.page}}</span> - {{products.totalPages}} </p>
+        
+     <a href="{{#if products.hasNextPage}}{{products.nextLink}}{{else}}#{{/if}}"><i class="bi bi-arrow-right-short"  style="margin: 0 15%;"></i></a>
 
     </section>
 

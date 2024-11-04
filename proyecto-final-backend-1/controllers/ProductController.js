@@ -15,24 +15,23 @@ export default class ProductController {
                 }
             };
 
-        getPaginated = async (pg) => {
+        getPaginated = async (pg, sort, limit) => {
             try {
-                const data = await productModel.paginate({}, { limit: 2, page: pg, lean: true });
-                //console.log(data.docs[0])
+                const sortParam = (sort) ? {price: parseInt(sort)} : {title: 1};
+                const data = await productModel.paginate({}, { limit: limit, page: pg, sort:sortParam, lean: true });
                 return data;
             } catch (err) {
                 return err.message;
             }
         }
         
-        async getProductById(id){
-            try {let obj = await this.getProducts();
-                 obj = obj.find(x => x.id == id)
-                 if (obj === undefined){
-                    return `No se pudo encontrar el producto ID: ${id}`;
-                    } else {
-                 return obj;}
-            }   catch(error)  { return 'Error al buscar producto por ID'}
+        async getProductById(pid){
+            try {
+                 const obj = await productModel.findOne({_id: pid}).lean();
+                 return obj
+            }   catch(error)  { 
+                console.log(error)
+                return 'Error al buscar producto por ID'}
         };
 
         async addProduct(prod){

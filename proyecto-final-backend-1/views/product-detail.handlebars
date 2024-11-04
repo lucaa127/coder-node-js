@@ -1,0 +1,41 @@
+<section class="p-4" style="background-color:rgb(246, 255, 253); width:90%; margin:auto;">
+
+<h4 style="color: darkslategrey; margin-bottom:10px;">Detalle de producto</h4>
+
+{{#if product}}
+
+
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{product.thumbnail}}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{product.title}}</h5>
+        <p class="card-text">{{product.description}}</p>
+        <p class="card-text">${{product.price}}</p>
+         <p class="card-text">       <i  class="bi bi-cart-plus"
+                    onclick="return test('{{product._id}}')"
+                    style="color: tomato;
+                    font-size:1.4em;
+                    font-weight:bolder;"
+                ></i>
+
+        </p>
+        <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
+        <p class="card-text"><small class="text-muted">prod_id: {{product._id}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{else}}
+    
+    <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
+    
+{{/if}}
+
+
+</section>

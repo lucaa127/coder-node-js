@@ -5,7 +5,7 @@ import  viewsRouter     from './routers/views.router.js';
 import  config          from './config.js';
 import  handlebars      from 'express-handlebars';
 import  initSocket      from './sockets.js';
-import mongoose         from 'mongoose';
+import  mongoose        from 'mongoose';
 
 const app = express();
 

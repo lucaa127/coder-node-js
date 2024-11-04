@@ -50,3 +50,9 @@ function test(id){
     
 }
 
+function search(){
+    let limit = (document.getElementById('limit').value) ? (document.getElementById('limit').value) : 10;
+    let sort  = (document.getElementById('sort').value) ? (document.getElementById('sort').value) : 1;
+
+    window.location.href = `/products/?limit=${limit}&sort=${sort}`;
+}

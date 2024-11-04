@@ -4,9 +4,9 @@ import CartController from '../controllers/CartController.js';
 const cartRouter = Router();
 const cartController = new CartController();
 
-cartRouter.post('/', async(req, res) => {
+cartRouter.get('/', async(req, res) => {
     try{const  createCart = await cartController.createCart();
-        console.log(createCart)
+        res.status(200).send(createCart);
         } catch(error) {
             res.send('Working NO OK: ', error)
     };
