@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import fetch from 'node-fetch';
+import CartController from '../controllers/CartController.js';
 
 
 const viewsRouter = Router();
@@ -28,11 +29,19 @@ viewsRouter.get('/products', async (req, res) => {
 
 
 viewsRouter.get('/products/:id', async (req, res) => {
-    try {
-        const response = await fetch(`${req.protocol}://${req.get('host')}/api/products/${req.params.id}`);
-        const product = await response.json();
-        
-        res.status(200).render('product-detail', {product});
+    try {const response = await fetch(`${req.protocol}://${req.get('host')}/api/products/${req.params.id}`);
+         const cart = new CartController();
+         const product = await response.json();
+         const getOpenCart = await cart.getOpenCart();
+         let openCartId;
+
+         if (getOpenCart){
+            openCartId = getOpenCart._id;
+         } else {
+            const createCart = await createCart();
+            openCartId = createCart._id;
+         }
+         res.status(200).render('product-detail', {product, openCartId});
      } catch (error) {
         console.log(error)
         res.status(500).render('server_error');

@@ -3,7 +3,7 @@
 <h4 style="color: darkslategrey; margin-bottom:10px;">Detalle de producto</h4>
 
 {{#if product}}
-
+<form action="/api/cart/{{openCartId}}/product/{{product._id}}" method="post">
 
 <div class="card mb-3" style="max-width: 540px;">
   <div class="row g-0">
@@ -23,6 +23,12 @@
                 ></i>
 
         </p>
+
+          <div class="contador-cont d-flex align-items-center">
+            <button class="btn btn-danger" onclick="decrement()">-</button>
+            <input id="counter" type="number" class="form-control text-center mx-2" value="1" min="1" max="10" readonly>
+            <button class="btn btn-success" onclick="increment()">+</button>
+          </div>
         <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
         <p class="card-text"><small class="text-muted">prod_id: {{product._id}}</small></p>
       </div>
@@ -30,7 +36,7 @@
   </div>
 </div>
 
-
+</form>
 {{else}}
     
     <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
@@ -39,3 +45,21 @@
 
 
 </section>
+
+ <script>
+    function increment() {
+      const counter = document.getElementById("counter");
+      let value = parseInt(counter.value, 10);
+      if (value < 10) {
+        counter.value = value + 1;
+      }
+    }
+
+    function decrement() {
+      const counter = document.getElementById("counter");
+      let value = parseInt(counter.value, 10);
+      if (value > 1) {
+        counter.value = value - 1;
+      }
+    }
+  </script>

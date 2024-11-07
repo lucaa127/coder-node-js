@@ -14,7 +14,9 @@ cartRouter.get('/', async(req, res) => {
 
 cartRouter.post('/:cid/product/:pid', async(req,res) => {
     try{const { cid, pid } = req.params;
-        const  addProductToCart = await cartController.addProductToCart(cid, pid);
+        const {quantity} = req.body;
+
+        const  addProductToCart = await cartController.addProductToCart(cid, pid, quantity);
         res.status(201).send(addProductToCart)
         }  catch(error)  {
             res.send('Error al agregar productos al carrito: ', error)
