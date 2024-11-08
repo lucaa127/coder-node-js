@@ -3,7 +3,11 @@
 <h4 style="color: darkslategrey; margin-bottom:10px;">Detalle de producto</h4>
 
 {{#if product}}
-<form action="/api/cart/{{openCartId}}/product/{{product._id}}" method="post">
+
+<form id="formProduct">
+<input hidden name="productId" id="productId" type="text" value="{{product._id}}">
+<input hidden name="openCartId" id="openCartId" type="text" value="{{openCartId}}">
+
 
 <div class="card mb-3" style="max-width: 540px;">
   <div class="row g-0">
@@ -25,10 +29,12 @@
         </p>
 
           <div class="contador-cont d-flex align-items-center">
-            <button class="btn btn-danger" onclick="decrement()">-</button>
-            <input id="counter" type="number" class="form-control text-center mx-2" value="1" min="1" max="10" readonly>
-            <button class="btn btn-success" onclick="increment()">+</button>
-          </div>
+            <button class="btn btn-danger" onclick="dec1(event)">-</button>
+            <input id="quantity" name="quantity" type="number" class="form-control text-center mx-2" value="1" min="1" max="10" readonly>
+            <button class="btn btn-success" onclick="inc1(event)">+</button>
+          </div>  
+
+          <p class="card-text">  <button class="btn btn-danger" type="submit">Agregar</button>  </p>
         <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
         <p class="card-text"><small class="text-muted">prod_id: {{product._id}}</small></p>
       </div>
@@ -46,20 +52,51 @@
 
 </section>
 
- <script>
-    function increment() {
-      const counter = document.getElementById("counter");
-      let value = parseInt(counter.value, 10);
-      if (value < 10) {
-        counter.value = value + 1;
-      }
-    }
 
-    function decrement() {
-      const counter = document.getElementById("counter");
-      let value = parseInt(counter.value, 10);
-      if (value > 1) {
-        counter.value = value - 1;
-      }
+
+<script>
+function inc1(event) {
+  event.preventDefault();
+  const c = document.getElementById("quantity");
+  let value = parseInt(c.value, 10);
+  if (value < 10) {
+    c.value = value + 1;
+  }
+}
+
+function dec1(event) {
+  event.preventDefault();
+  const c = document.getElementById("quantity");
+  let value = parseInt(c.value, 10);
+  if (value > 1) {
+    c.value = value - 1;
+  }
+}
+
+// PUT request on form submit
+document.getElementById("formProduct").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+  const cartId = document.getElementById("openCartId").value;
+
+  try {
+    const response = await fetch(`/api/carts/${cartId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      console.log("Data sent successfully!");
+    } else {
+      console.error("Error sending data:", response.status);
     }
-  </script>
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+</script>
+
+

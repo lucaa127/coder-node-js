@@ -75,7 +75,7 @@ export default class CartController {
               );
           
               if (!cart) {
-                // Si el producto no existe en el carrito, agrégalo con la cantidad inicial
+                 
                 const updatedCart = await cartModel.findByIdAndUpdate(
                   cartId,
                   { $push: { products: { _id: productId, qty: quantity } } },
@@ -85,7 +85,7 @@ export default class CartController {
                 return updatedCart;
               }
               
-              return cart; // Retorna el carrito actualizado
+              return cart;
             } catch (error) {
               console.error("Error updating cart:", error);
               throw error;
