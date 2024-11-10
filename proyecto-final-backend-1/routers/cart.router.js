@@ -26,6 +26,7 @@ cartRouter.post('/:cid/product/:pid', async(req,res) => {
 cartRouter.get('/:cid', async(req, res) => {
     try {const {cid} = req.params;
          const   products = await cartController.getCartProducts(cid);
+         
          res.status(201).send(products)
          } catch (error) {
           console.log(error)
@@ -34,16 +35,17 @@ cartRouter.get('/:cid', async(req, res) => {
 } );
 
 
-cartRouter.put('/:cid', async(req,res) => {
-    try{const { cid } = req.params;
-        const {productId, quantity} = req.body;
-        const  addProductToCart = await cartController.addProductToCart(cid, productId, quantity);
-        console.log(addProductToCart)
-        res.status(201).send(addProductToCart);
-        } catch(error)  {
+cartRouter.put('/:cid', async (req, res) => {
+    try {
+        const { cid } = req.params;
+        const { productId, quantity } = req.body;
+        const addProductToCart = await cartController.addProductToCart(cid, productId, quantity);
+        
+        console.log(addProductToCart);
+        res.status(201).send(addProductToCart)
+    } catch (error) {
         console.log(error)
-        res.status(500).send(error);
-         };
-} );
-
+        res.status(500).send(error)
+    }
+});
 export default cartRouter

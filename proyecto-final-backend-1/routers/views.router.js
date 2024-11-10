@@ -18,8 +18,21 @@ viewsRouter.get('/products', async (req, res) => {
          //let order = req.query.order ?limit=1&page=1
         const response = await fetch(`${req.protocol}://${req.get('host')}/api/products/?limit=${limit}&page=${page}&sort=${sort}`);
         const products = await response.json();
+
+        //Para el link del carrito
+        const cart = new CartController();
+        const getOpenCart = await cart.getOpenCart();
+        let openCartId;
+
+        if (getOpenCart){
+           openCartId = getOpenCart._id;
+        } else {
+           const createCart = await createCart();
+           openCartId = createCart._id;
+        }
+
         
-        res.status(200).render('products', {products});
+        res.status(200).render('products', {products, openCartId});
      } catch (error) {
         console.log(error)
         res.status(500).render('server_error');
@@ -42,6 +55,21 @@ viewsRouter.get('/products/:id', async (req, res) => {
             openCartId = createCart._id;
          }
          res.status(200).render('product-detail', {product, openCartId});
+     } catch (error) {
+        console.log(error)
+        res.status(500).render('server_error');
+    }
+
+});
+
+
+
+viewsRouter.get('/carts/:cid', async (req, res) => {
+    try {const response = await fetch(`${req.protocol}://${req.get('host')}/api/carts/${req.params.cid}`);
+         const cartData = await response.json();
+         //if (cartData){ console.log(cartData)} else { console.log('Carrito no existe_ ', cartData) }
+        //console.log(cartData)
+        res.status(200).render('cart-detail', {cartData});
      } catch (error) {
         console.log(error)
         res.status(500).render('server_error');

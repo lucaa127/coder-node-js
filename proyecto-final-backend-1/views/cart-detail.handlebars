@@ -1,0 +1,44 @@
+<section class="p-4" style="border:solid 1px; background-color:rgb(246, 255, 253); width:90%; margin:auto;">
+
+<h4 style="color: darkslategrey; margin-bottom:10px;">Carrito de compras: </h4>
+
+{{#if cartData}}
+
+
+<section class="row">
+
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Img</th>
+        <th scope="col">Cant</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{#each cartData.products }}
+            <tr>
+            <td><a style="color: black;" href="/products/{{this._id._id}}">{{this._id.title}}</a></td>
+            <td>${{this._id.price}}</td>
+            <td><img width="50" height="50" src="{{this.thumbnail}}"></td>
+            <td class="p-4">
+                {{this.qty}}
+            </td>
+
+            </tr>
+        {{/each}}
+
+    </tbody>
+    </table>
+<p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
+
+{{else}}
+    
+    <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
+    
+{{/if}}
+
+
+</section>

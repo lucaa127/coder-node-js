@@ -1,6 +1,8 @@
 <section class="p-4" style="background-color:rgb(246, 255, 253); width:90%; margin:auto;">
 
-<h4 style="color: darkslategrey; margin-bottom:10px;">Detalle de producto</h4>
+<section class="row">
+<span class="w-50 text-start" style="color: darkslategrey; margin-bottom:10px; font-weight:bolder;">Detalle de producto</span> <a class="w-50 text-end" style="color: darkslategrey; margin-bottom:10px; text-decoration: none;" href="/carts/{{openCartId}}">Ver carrito</a>
+</section>
 
 {{#if product}}
 
@@ -9,7 +11,7 @@
 <input hidden name="openCartId" id="openCartId" type="text" value="{{openCartId}}">
 
 
-<div class="card mb-3" style="max-width: 540px;">
+<div class="card mb-3" style="max-width: 550px; margin:auto;">
   <div class="row g-0">
     <div class="col-md-4">
       <img src="{{product.thumbnail}}" class="img-fluid rounded-start" alt="...">
@@ -19,22 +21,23 @@
         <h5 class="card-title">{{product.title}}</h5>
         <p class="card-text">{{product.description}}</p>
         <p class="card-text">${{product.price}}</p>
-         <p class="card-text">       <i  class="bi bi-cart-plus"
+         {{!-- <p class="card-text">       <i  class="bi bi-cart-plus"
                     onclick="return test('{{product._id}}')"
                     style="color: tomato;
                     font-size:1.4em;
                     font-weight:bolder;"
                 ></i>
 
-        </p>
+        </p> --}}
 
           <div class="contador-cont d-flex align-items-center">
-            <button class="btn btn-danger" onclick="dec1(event)">-</button>
-            <input id="quantity" name="quantity" type="number" class="form-control text-center mx-2" value="1" min="1" max="10" readonly>
-            <button class="btn btn-success" onclick="inc1(event)">+</button>
+            <button class="btn btn-danger" onclick="dec1(event)"> - </button>
+            <input id="quantity" name="quantity" type="number" class="form-control text-right mx-2" style="width: 60px;" value="1" min="1" max="10" readonly>
+            <button class="btn btn-success" onclick="inc1(event)"> + </button>
+            <button class="btn btn-danger p-2 m-2" type="submit">Agregar  <i  class="bi bi-cart-plus"></i></button>
           </div>  
 
-          <p class="card-text">  <button class="btn btn-danger" type="submit">Agregar</button>  </p>
+          <p class="card-tex">    </p>
         <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
         <p class="card-text"><small class="text-muted">prod_id: {{product._id}}</small></p>
       </div>

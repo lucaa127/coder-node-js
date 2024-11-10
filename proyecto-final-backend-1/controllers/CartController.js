@@ -26,10 +26,10 @@ export default class CartController {
         
         async getCartProducts(cid){ 
             try {
-                return await cartModel.findById(cid).populate({ path: 'products', model: productModel }).lean();
+                return await cartModel.findById(cid).populate({ path: 'products._id', model: productModel, select: 'title price' }).lean();
             } catch (error) {
                 console.log(error);
-                return error;
+                return false;
             }
         };    
 
@@ -42,28 +42,6 @@ export default class CartController {
                     return(error);
                 }
             };
-
-        //     async addProductToCart(id,pid) {
-        //         try{const getCart = await cartModel.findById(cid).lean();
-        //             if (getCart){
-        //                     let prodById = getCart.products.find((x)=> x.pid == pid);
-        //                     console.log(' Objeto: ',prodById)
-        //                     if (prodById){
-        //                         console.log('Ingresa OK porque existe el producto en el carro')
-        //                         cartModel.findOneAndUpdate({_id: id, products._id:pid}, updated, options);
-                                
-        //                     } else {//let newProd = {pid: pid, quantity: 1}
-        //                           //  cart.products.push(newProd);
-        //                     }
-                               
-
-        //                 await fs.promises.writeFile(this.fPath, JSON.stringify(getCarts));
-        //                 console.log('Info carros :',getCarts);
-        //                 return getCarts;
-        //             } else {return {error:'El carrito de compras no existe'}}
-        //     }   catch(error)    {console.log("ERR: ", error)};
-        // };        
-
 
 
         async addProductToCart (cartId, productId, quantity) {
