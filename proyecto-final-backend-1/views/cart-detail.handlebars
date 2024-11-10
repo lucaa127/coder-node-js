@@ -4,7 +4,7 @@
 
 {{#if cartData}}
 
-
+<form id="cartForm">
 <section class="row">
 
     <table class="table">
@@ -12,8 +12,8 @@
         <tr>
         <th scope="col">Producto</th>
         <th scope="col">Precio</th>
-        <th scope="col">Img</th>
         <th scope="col">Cant</th>
+        <th scope="col">-</th>
         </tr>
     </thead>
     <tbody>
@@ -22,9 +22,20 @@
             <tr>
             <td><a style="color: black;" href="/products/{{this._id._id}}">{{this._id.title}}</a></td>
             <td>${{this._id.price}}</td>
-            <td><img width="50" height="50" src="{{this.thumbnail}}"></td>
+            <td class="p-4 contador-cont d-flex ">
+
+            <button class="btn btn-danger" onclick="dec1(event,'{{this._id._id}}')"> - </button>
+            <input id="qty{{this._id._id}}" name="qty{{this._id._id}}" type="number" class="form-control text-right mx-2" style="width: 60px;" value="{{this.qty}}" min="1" max="50" readonly>
+            <button class="btn btn-success" onclick="inc1(event,'{{this._id._id}}')"> + </button>
+            </td>
+
             <td class="p-4">
-                {{this.qty}}
+                <i  class="bi bi-trash"
+                    onclick="return test('{{this._id}}')"
+                    style="color: tomato;
+                    font-size:1.1em;
+                    font-weight:bolder;"
+                ></i>   
             </td>
 
             </tr>
@@ -32,6 +43,8 @@
 
     </tbody>
     </table>
+
+  </form>  
 <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
 
 {{else}}
@@ -42,3 +55,28 @@
 
 
 </section>
+
+
+
+<script>
+function inc1(event, id) {
+  event.preventDefault();
+  const c = document.getElementById(`qty${id}`);
+  let value = parseInt(c.value, 10);
+  if (value < 50) {
+    c.value = value + 1;
+  }
+}
+
+function dec1(event, id) {
+  event.preventDefault();
+  const c = document.getElementById(`qty${id}`);
+  let value = parseInt(c.value, 10);
+  if (value > 1) {
+    c.value = value - 1;
+  }
+}
+
+// PUT request on form submit
+
+</script>
