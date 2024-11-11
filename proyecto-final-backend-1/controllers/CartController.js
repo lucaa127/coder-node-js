@@ -66,8 +66,20 @@ export default class CartController {
               return cart;
             } catch (error) {
               console.error("Error updating cart:", error);
-              throw error;
             }
           };
+
+          async updateProductQty(cartId, productId, qty) {
+            try {  const cart = await cartModel.findOneAndUpdate(
+                    { _id: cartId, "products._id": productId },
+                    { $set: { "products.$.qty": qty } },
+                    { new: true }
+                );
+                return cart;
+            } catch (error) {
+                console.error("Error updating product qty:", error);
+            }
+        }
+
 
     };

@@ -48,4 +48,19 @@ cartRouter.put('/:cid', async (req, res) => {
         res.status(500).send(error)
     }
 });
+
+cartRouter.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        const { cid, pid } = req.params;
+        const  quantity  = req.body.quantity;
+        console.log(quantity)
+        const updateProdQty = await cartController.updateProductQty(cid, pid, quantity);
+       
+        res.status(201).send(updateProdQty)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error)
+    }
+});
+
 export default cartRouter

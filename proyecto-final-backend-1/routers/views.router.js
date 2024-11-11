@@ -47,7 +47,6 @@ viewsRouter.get('/products/:id', async (req, res) => {
          const product = await response.json();
          const getOpenCart = await cart.getOpenCart();
          let openCartId;
-
          if (getOpenCart){
             openCartId = getOpenCart._id;
          } else {
@@ -67,9 +66,10 @@ viewsRouter.get('/products/:id', async (req, res) => {
 viewsRouter.get('/carts/:cid', async (req, res) => {
     try {const response = await fetch(`${req.protocol}://${req.get('host')}/api/carts/${req.params.cid}`);
          const cartData = await response.json();
+         const {cid} = req.params;
          //if (cartData){ console.log(cartData)} else { console.log('Carrito no existe_ ', cartData) }
         //console.log(cartData)
-        res.status(200).render('cart-detail', {cartData});
+        res.status(200).render('cart-detail', {cartData, cid});
      } catch (error) {
         console.log(error)
         res.status(500).render('server_error');

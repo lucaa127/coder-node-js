@@ -24,9 +24,9 @@
             <td>${{this._id.price}}</td>
             <td class="p-4 contador-cont d-flex ">
 
-            <button class="btn btn-danger" onclick="dec1(event,'{{this._id._id}}')"> - </button>
-            <input id="qty{{this._id._id}}" name="qty{{this._id._id}}" type="number" class="form-control text-right mx-2" style="width: 60px;" value="{{this.qty}}" min="1" max="50" readonly>
-            <button class="btn btn-success" onclick="inc1(event,'{{this._id._id}}')"> + </button>
+            <button class="btn btn-danger" onclick="dec1(event,'{{this._id._id}}','{{../cid}}')"> - </button>
+            <input id="qty{{this._id._id}}" name="{{this._id._id}}" type="number" class="form-control text-right mx-2" style="width: 60px;" value="{{this.qty}}" min="1" max="50" readonly>
+            <button class="btn btn-success" onclick="inc1(event,'{{this._id._id}}','{{../cid}}')"> + </button>
             </td>
 
             <td class="p-4">
@@ -44,7 +44,7 @@
     </tbody>
     </table>
 
-  </form>  
+
 <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
 
 {{else}}
@@ -59,21 +59,53 @@
 
 
 <script>
-function inc1(event, id) {
+async function inc1(event, id, cartId) {
+
   event.preventDefault();
   const c = document.getElementById(`qty${id}`);
   let value = parseInt(c.value, 10);
   if (value < 50) {
     c.value = value + 1;
+       try {
+        const response = await fetch(`/api/carts/${cartId}/products/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify( {quantity: c.value})
+        });
+
+        if (response.status === 200 || response.status === 201) {
+          console.log("Data sent successfully!");
+        } else {
+          console.error("Error sending data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
   }
 }
 
-function dec1(event, id) {
+async function dec1(event, id, cartId) {
   event.preventDefault();
   const c = document.getElementById(`qty${id}`);
   let value = parseInt(c.value, 10);
   if (value > 1) {
     c.value = value - 1;
+
+        try {
+        const response = await fetch(`/api/carts/${cartId}/products/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify( {quantity: c.value})
+        });
+
+        if (response.status === 200 || response.status === 201) {
+          console.log("Data sent successfully!");
+        } else {
+          console.error("Error sending data:", response.status);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
   }
 }
 
