@@ -5,9 +5,9 @@
 {{#if cartData.products }}
 
 <form id="cartForm">
-<section class="row">
+<section class="row" id="{{cid}}">
 
-    <table class="table">
+    <table class="table" >
     <thead>
         <tr>
         <th scope="col">Producto</th>
@@ -53,9 +53,14 @@
     <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Ver productos</a></p>
     
 {{/if}}
-
-
 </section>
+  <div id="emptyCart" class="row" style="display: none;">
+    <span class="badge bg-info text-dark p-4" >No hay productos en el carrito de compras..</span><br>
+    <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Ver productos</a></p>
+  </div>
+
+
+
 
 
 
@@ -121,6 +126,9 @@ async function releaseCart(cartId) {
         });
           if (response.status === 200 || response.status === 201) {
             console.log("Cart released");
+            document.getElementById(`${cartId}`).style.display = 'none';
+            document.getElementById(`emptyCart`).style.display = 'flex';
+            
           } else {
             console.error("Error sending data:", response.status);
           }
