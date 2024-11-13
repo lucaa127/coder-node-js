@@ -81,5 +81,29 @@ export default class CartController {
             }
         }
 
+        async deleteAllProducts(cartId) {
+            try {const cart = await cartModel.updateOne(
+                { _id: cartId },
+                { $set: { "products": [] } }
+                );
+                return cart;
+            } catch (error) {
+                console.error("Error deleting cart products:", error);
+            }
+        }
+
+
+
+        async deleteProductById(cartId, productId) {
+            try {const cart = await cartModel.updateOne(
+                { _id: cartId },
+                { $pull: { products: { _id: productId } } }
+                );
+                return cart;
+            } catch (error) {
+                console.error("Error deleting cart products:", error);
+            }
+        }
+
 
     };

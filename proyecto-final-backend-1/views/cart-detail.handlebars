@@ -2,7 +2,7 @@
 
 <h4 style="color: darkslategrey; margin-bottom:10px;">Carrito de compras: </h4>
 
-{{#if cartData}}
+{{#if cartData.products }}
 
 <form id="cartForm">
 <section class="row">
@@ -19,7 +19,7 @@
     <tbody>
 
         {{#each cartData.products }}
-            <tr>
+            <tr id="row-{{this._id._id}}"> 
             <td><a style="color: black;" href="/products/{{this._id._id}}">{{this._id.title}}</a></td>
             <td>${{this._id.price}}</td>
             <td class="p-4 contador-cont d-flex ">
@@ -31,7 +31,7 @@
 
             <td class="p-4">
                 <i  class="bi bi-trash"
-                    onclick="return test('{{this._id}}')"
+                    onclick="return deleteProductFromCart('{{../cid}}', '{{this._id._id}}')"
                     style="color: tomato;
                     font-size:1.1em;
                     font-weight:bolder;"
@@ -45,11 +45,12 @@
     </table>
 
 
-<p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a></p>
+<p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Volver a productos</a> <span class="btn btn-danger" style="margin-left: 14%; margin-top:2px;" onclick="return releaseCart('{{cid}}')"> Vaciar carrito <i class="bi bi-cart-x"></i> </span> </p>
 
 {{else}}
     
-    <span class="badge bg-info text-dark p-4">No hay productos registrados</span><br>
+    <span class="badge bg-info text-dark p-4 d-flex ms-auto">No hay productos en el carrito de compras..</span><br>
+    <p class="card-text"> <a href="/products"><i class="bi bi-arrow-left-short"></i> Ver productos</a></p>
     
 {{/if}}
 
@@ -109,6 +110,44 @@ async function dec1(event, id, cartId) {
   }
 }
 
-// PUT request on form submit
+
+
+async function releaseCart(cartId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify( {cartId: cartId})
+        });
+          if (response.status === 200 || response.status === 201) {
+            console.log("Cart released");
+          } else {
+            console.error("Error sending data:", response.status);
+          }
+      } catch (error) {
+        console.error("Error:", error);
+   }
+}
+
+
+
+async function deleteProductFromCart(cartId, prodId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/products/${prodId}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify( {cartId: cartId})
+        });
+          if (response.status === 200 || response.status === 201) {
+            console.log("Product deleted");
+            document.getElementById(`row-${prodId}`).style.display = 'none';
+          } else {
+            console.error("Error sending data:", response.status);
+          }
+      } catch (error) {
+        console.error("Error:", error);
+   }
+}
+
 
 </script>
